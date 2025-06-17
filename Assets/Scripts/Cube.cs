@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
-    public event Action<Cube> Collided;
+    public event Action<Cube, ContactPoint> Collided;
     public event Action Disabled;
 
     private bool _isCollided = false;
@@ -17,7 +17,7 @@ public class Cube : MonoBehaviour
         if (collision.collider.GetComponent<Platform>() == null)
             return;
 
-        Collided?.Invoke(this);
+        Collided?.Invoke(this, collision.GetContact(0));
 
         _isCollided = true;
     }

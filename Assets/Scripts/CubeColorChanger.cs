@@ -29,7 +29,7 @@ public class CubeColorChanger : MonoBehaviour
         _cube.Disabled -= SetBaseColor;
     }
 
-    private void SetDestroyingColor(Cube cube)
+    private void SetDestroyingColor(Cube cube, ContactPoint contact)
     {
         if (_renderer.material == _destroyingColorMaterial)
             return;
