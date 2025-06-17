@@ -1,20 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Cube))]
+[RequireComponent(typeof(Animator))]
 public class CubeColorChanger : MonoBehaviour
 {
-    [SerializeField] private Material _destroyingColorMaterial;
-    [SerializeField] private Material _baseColorMaterial;
+    [SerializeField] private Animator _animator;
+
+    private readonly string IsCollidedName = "isCollided";
 
     private Cube _cube;
-    private Renderer _renderer;
 
     private void Awake()
     {
         _cube = GetComponent<Cube>();
-        _renderer = GetComponent<Renderer>();
+        _animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
@@ -31,14 +30,11 @@ public class CubeColorChanger : MonoBehaviour
 
     private void SetDestroyingColor(Cube cube, ContactPoint contact)
     {
-        if (_renderer.material == _destroyingColorMaterial)
-            return;
-
-        _renderer.material = _destroyingColorMaterial;
+        _animator.SetBool(IsCollidedName, true);
     }
 
     private void SetBaseColor()
     {
-        _renderer.material = _baseColorMaterial;
+        _animator.SetBool(IsCollidedName, false);
     }
 }
