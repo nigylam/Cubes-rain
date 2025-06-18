@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Cube))]
 [RequireComponent(typeof(Animator))]
-public class CubeColorChanger : MonoBehaviour
+public class ColorChanger : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
 

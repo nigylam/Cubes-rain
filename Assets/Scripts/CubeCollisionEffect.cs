@@ -35,15 +35,15 @@ public class CubeCollisionEffect : MonoBehaviour
 
     private void OnEnable()
     {
-        _cube.Collided += _spawnEffect;
+        _cube.Collided += SpawnEffect;
     }
 
     private void OnDisable()
     {
-        _cube.Collided -= _spawnEffect;
+        _cube.Collided -= SpawnEffect;
     }
 
-    private void _spawnEffect(Cube cube, ContactPoint contact)
+    private void SpawnEffect(Cube cube, ContactPoint contact)
     {
         ParticleSystem effect = _effectPool.Get();
         effect.transform.position = contact.point;
