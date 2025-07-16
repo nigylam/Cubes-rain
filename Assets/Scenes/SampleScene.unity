@@ -961,11 +961,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cubeSpawner: {fileID: 1868351263}
-  _explosionEffectPrefab: {fileID: 3942993874346229410, guid: 03d39c89ed6221d49a20e82b29b3dce9, type: 3}
-  _deleatingTimeMin: 2
-  _deleatingTimeMax: 5
+  _explosionEffectPrefab: {fileID: 1927813712329350968, guid: 03d39c89ed6221d49a20e82b29b3dce9, type: 3}
+  _cubeDeleatingTimeMin: 2
+  _cubeDeleatingTimeMax: 5
   _poolCapacity: 10
   _poolMaxSize: 20
+  _effectDeleatingTime: 4
 --- !u!1 &1955453814
 GameObject:
   m_ObjectHideFlags: 0

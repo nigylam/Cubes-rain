@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class CubeDestroyer : MonoBehaviour
+public class Destroyer : MonoBehaviour
 {
     [SerializeField] private CubeSpawner _cubeSpawner;
-    [SerializeField] private CubeExplosionEffect _explosionEffectPrefab;
+    [SerializeField] private CubeDisappearingEffect _explosionEffectPrefab;
     [SerializeField] private float _cubeDeleatingTimeMin = 2f;
     [SerializeField] private float _cubeDeleatingTimeMax = 5f;
     [SerializeField] private int _poolCapacity = 10;
@@ -16,13 +16,13 @@ public class CubeDestroyer : MonoBehaviour
     private List<WaitForSeconds> _cubeDeleatingTimes;
     private WaitForSeconds _effectDeleatingTimeWait;
 
-    private ObjectPool<CubeExplosionEffect> _explosionPrefabPool;
+    private ObjectPool<CubeDisappearingEffect> _explosionPrefabPool;
 
     private void Awake()
     {
         _effectDeleatingTimeWait = new WaitForSeconds(_effectDeleatingTime);
 
-        _explosionPrefabPool = new ObjectPool<CubeExplosionEffect>(
+        _explosionPrefabPool = new ObjectPool<CubeDisappearingEffect>(
             createFunc: () => Instantiate(_explosionEffectPrefab),
             actionOnGet: (explosionEffect) => explosionEffect.gameObject.SetActive(true),
             actionOnRelease: (explosionEffect) => explosionEffect.gameObject.SetActive(false),
@@ -53,7 +53,7 @@ public class CubeDestroyer : MonoBehaviour
 
     private void SpawnExplosion(Vector3 position)
     {
-        CubeExplosionEffect explosion = _explosionPrefabPool.Get();
+        CubeDisappearingEffect explosion = _explosionPrefabPool.Get();
         explosion.PlayEffect(position);
         StartCoroutine(DeactivateAfterDelay(explosion));
     }
@@ -66,7 +66,7 @@ public class CubeDestroyer : MonoBehaviour
         SpawnExplosion(cubePosition);
     }
 
-    private IEnumerator DeactivateAfterDelay(CubeExplosionEffect explosion)
+    private IEnumerator DeactivateAfterDelay(CubeDisappearingEffect explosion)
     {
         yield return _effectDeleatingTimeWait;
         _explosionPrefabPool.Release(explosion);

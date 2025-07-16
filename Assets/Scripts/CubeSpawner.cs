@@ -10,7 +10,7 @@ public class CubeSpawner : MonoBehaviour
     [SerializeField] private float _spawnHeight = 15f;
     [SerializeField] private Platform _mainPlatform;
     [SerializeField] private float _spawnOffset = 0.5f;
-    [SerializeField] private CubeDestroyer _cubeDestroyer;
+    [SerializeField] private Destroyer _cubeDestroyer;
 
     private float _spawnPositionMaxX;
     private float _spawnPositionMinX;
@@ -72,11 +72,5 @@ public class CubeSpawner : MonoBehaviour
     private void GetCube()
     {
         _pool.Get();
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.collider.TryGetComponent(out Cube cube))
-            _pool.Release(cube);
     }
 }

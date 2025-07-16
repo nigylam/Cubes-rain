@@ -3,7 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody))]
-public class Cube : MonoBehaviour
+public class Cube : DestroyableObject
 {
     private readonly string IsCollidedName = "isCollided";
 
@@ -11,7 +11,6 @@ public class Cube : MonoBehaviour
     public event Action Disabled;
 
     private Animator _animator;
-
     private bool _isCollided = false;
 
     public bool IsCollided => _isCollided;
