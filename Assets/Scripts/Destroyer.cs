@@ -1,28 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Destroyer : MonoBehaviour
+public abstract class Destroyer : MonoBehaviour
 {
-    [SerializeField] private CubeSpawner _cubeSpawner;
-    [SerializeField] private CubeDisappearingEffect _explosionEffectPrefab;
-    [SerializeField] private float _cubeDeleatingTimeMin = 2f;
-    [SerializeField] private float _cubeDeleatingTimeMax = 5f;
+    [SerializeField] private Spawner _spawner;
+    [SerializeField] private ExplosionEffect _explosionEffectPrefab;
+    [SerializeField] private float _deleatingTimeMin = 2f;
+    [SerializeField] private float _deleatingTimeMax = 5f;
     [SerializeField] private int _poolCapacity = 10;
     [SerializeField] private int _poolMaxSize = 20;
     [SerializeField] private float _effectDeleatingTime = 4f;
 
-    private List<WaitForSeconds> _cubeDeleatingTimes;
+    public event Action<Vector3> Destroyed;
+
+    private List<WaitForSeconds> _objectDeleatingTimes;
     private WaitForSeconds _effectDeleatingTimeWait;
 
-    private ObjectPool<CubeDisappearingEffect> _explosionPrefabPool;
+    private ObjectPool<ExplosionEffect> _explosionPrefabPool;
 
     private void Awake()
     {
         _effectDeleatingTimeWait = new WaitForSeconds(_effectDeleatingTime);
 
-        _explosionPrefabPool = new ObjectPool<CubeDisappearingEffect>(
+        _explosionPrefabPool = new ObjectPool<ExplosionEffect>(
             createFunc: () => Instantiate(_explosionEffectPrefab),
             actionOnGet: (explosionEffect) => explosionEffect.gameObject.SetActive(true),
             actionOnRelease: (explosionEffect) => explosionEffect.gameObject.SetActive(false),
@@ -35,38 +38,33 @@ public class Destroyer : MonoBehaviour
 
     private void Start()
     {
-        _cubeDeleatingTimes = new List<WaitForSeconds>();
+        _objectDeleatingTimes = new List<WaitForSeconds>();
 
-        for (float i = _cubeDeleatingTimeMin; i <= _cubeDeleatingTimeMax; i++)
+        for (float i = _deleatingTimeMin; i <= _deleatingTimeMax; i++)
         {
-            _cubeDeleatingTimes.Add(new WaitForSeconds(i));
+            _objectDeleatingTimes.Add(new WaitForSeconds(i));
         }
     }
 
-    public void DestroyCube(Cube cube, ContactPoint contact)
+    public abstract void DestroyObject(DestroyableObject destroyableObject);
+
+    protected IEnumerator DestroyAfterDelay(DestroyableObject destroyableObject)
     {
-        if (cube.IsCollided == false)
-        {
-            StartCoroutine(DestroyAfterDelay(cube));
-        }
+        yield return _objectDeleatingTimes[UnityEngine.Random.Range(0, _objectDeleatingTimes.Count)];
+        Vector3 position = destroyableObject.transform.position;
+        _spawner.ReleaseObjectIntoPool(destroyableObject);
+        SpawnExplosion(position);
+        Destroyed?.Invoke(position);
     }
 
     private void SpawnExplosion(Vector3 position)
     {
-        CubeDisappearingEffect explosion = _explosionPrefabPool.Get();
+        ExplosionEffect explosion = _explosionPrefabPool.Get();
         explosion.PlayEffect(position);
         StartCoroutine(DeactivateAfterDelay(explosion));
     }
 
-    private IEnumerator DestroyAfterDelay(Cube cube)
-    {
-        yield return _cubeDeleatingTimes[Random.Range(0, _cubeDeleatingTimes.Count)];
-        Vector3 cubePosition = cube.transform.position;
-        _cubeSpawner.ReleaseCubeIntoPool(cube);
-        SpawnExplosion(cubePosition);
-    }
-
-    private IEnumerator DeactivateAfterDelay(CubeDisappearingEffect explosion)
+    private IEnumerator DeactivateAfterDelay(ExplosionEffect explosion)
     {
         yield return _effectDeleatingTimeWait;
         _explosionPrefabPool.Release(explosion);

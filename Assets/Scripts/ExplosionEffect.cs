@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CubeDisappearingEffect : MonoBehaviour
+public class ExplosionEffect : MonoBehaviour
 {
     private ParticleSystem _particleSystem;
     private AudioSource _audioSource;

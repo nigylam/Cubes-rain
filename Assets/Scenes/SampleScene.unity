@@ -593,13 +593,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.381933, y: -0, z: -0, w: 0.92419004}
-  m_LocalPosition: {x: 0, y: 11.64, z: -9.07}
+  m_LocalRotation: {x: 0.40611616, y: -0, z: -0, w: 0.91382146}
+  m_LocalPosition: {x: 1.06, y: 12.56, z: -8.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 44.907, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 47.922, y: 0, z: 0}
 --- !u!1 &1143835738
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,6 +906,8 @@ GameObject:
   - component: {fileID: 1868351264}
   - component: {fileID: 1868351263}
   - component: {fileID: 1868351265}
+  - component: {fileID: 1868351266}
+  - component: {fileID: 1868351267}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -925,14 +927,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10fcea3d6aac1bd46bb6c5265c1295a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cubePrefab: {fileID: 6839913517952862982, guid: c9e461e8c31a0ca42a690ad7b732d956, type: 3}
+  ObjectDestroyer: {fileID: 1868351265}
+  _objectPrefab: {fileID: 6839913517952862982, guid: c9e461e8c31a0ca42a690ad7b732d956, type: 3}
   _poolCapacity: 5
   _poolMaxSize: 10
   _repeatRate: 3
   _spawnHeight: 14
   _mainPlatform: {fileID: 324659993}
   _spawnOffset: 1
-  _cubeDestroyer: {fileID: 1868351265}
 --- !u!4 &1868351264
 Transform:
   m_ObjectHideFlags: 0
@@ -960,10 +962,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4512ff7ae35348b9ef2d404abb750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cubeSpawner: {fileID: 1868351263}
+  _spawner: {fileID: 1868351263}
   _explosionEffectPrefab: {fileID: 1927813712329350968, guid: 03d39c89ed6221d49a20e82b29b3dce9, type: 3}
-  _cubeDeleatingTimeMin: 2
-  _cubeDeleatingTimeMax: 5
+  _deleatingTimeMin: 2
+  _deleatingTimeMax: 5
+  _poolCapacity: 10
+  _poolMaxSize: 20
+  _effectDeleatingTime: 4
+--- !u!114 &1868351266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868351262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a11eb243563c4249b6404b9d5a40bb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectDestroyer: {fileID: 0}
+  _objectPrefab: {fileID: 841680775891511535, guid: 29aaa61782b8f7a46b279679f2694543, type: 3}
+  _poolCapacity: 5
+  _poolMaxSize: 10
+  _cubeDestroyer: {fileID: 1868351265}
+--- !u!114 &1868351267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868351262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ba578514bbbaab4fb46cb84bed5d053, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawner: {fileID: 1868351266}
+  _explosionEffectPrefab: {fileID: 1927813712329350968, guid: 8021ceb41671eb94db5bcdff489470e9, type: 3}
+  _deleatingTimeMin: 2
+  _deleatingTimeMax: 5
   _poolCapacity: 10
   _poolMaxSize: 20
   _effectDeleatingTime: 4
