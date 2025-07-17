@@ -54,7 +54,8 @@ public class CubeSpawner : Spawner
 
     private void DestroyCube(Cube cube, ContactPoint contact)
     {
-        ObjectDestroyer.DestroyObject(cube);
+        if (cube.IsCollided == false)
+            ObjectDestroyer.StartDestroying(cube);
     }
 
     private void GetCube()

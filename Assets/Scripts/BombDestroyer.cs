@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class BombDestroyer : Destroyer
 {
-    public override void DestroyObject(DestroyableObject destroyableObject)
+    [SerializeField] private Exploader _exploader;
+
+    protected override void DestroyObject(DestroyableObject destroyableObject)
     {
-        StartCoroutine(DestroyAfterDelay(destroyableObject));
+        Vector3 position = destroyableObject.transform.position;
+        base.DestroyObject(destroyableObject);
+        _exploader.Explode(position);
     }
 }

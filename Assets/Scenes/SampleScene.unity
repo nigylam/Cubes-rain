@@ -908,6 +908,7 @@ GameObject:
   - component: {fileID: 1868351265}
   - component: {fileID: 1868351266}
   - component: {fileID: 1868351267}
+  - component: {fileID: 1868351268}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -931,7 +932,7 @@ MonoBehaviour:
   _objectPrefab: {fileID: 6839913517952862982, guid: c9e461e8c31a0ca42a690ad7b732d956, type: 3}
   _poolCapacity: 5
   _poolMaxSize: 10
-  _repeatRate: 3
+  _repeatRate: 2
   _spawnHeight: 14
   _mainPlatform: {fileID: 324659993}
   _spawnOffset: 1
@@ -962,10 +963,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d4512ff7ae35348b9ef2d404abb750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawner: {fileID: 1868351263}
+  _objectSpawner: {fileID: 1868351263}
   _explosionEffectPrefab: {fileID: 1927813712329350968, guid: 03d39c89ed6221d49a20e82b29b3dce9, type: 3}
-  _deleatingTimeMin: 2
-  _deleatingTimeMax: 5
+  _deleatingTimeMin: 5
+  _deleatingTimeMax: 7
   _poolCapacity: 10
   _poolMaxSize: 20
   _effectDeleatingTime: 4
@@ -981,7 +982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a11eb243563c4249b6404b9d5a40bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectDestroyer: {fileID: 0}
+  ObjectDestroyer: {fileID: 1868351267}
   _objectPrefab: {fileID: 841680775891511535, guid: 29aaa61782b8f7a46b279679f2694543, type: 3}
   _poolCapacity: 5
   _poolMaxSize: 10
@@ -998,13 +999,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ba578514bbbaab4fb46cb84bed5d053, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawner: {fileID: 1868351266}
+  _objectSpawner: {fileID: 1868351266}
   _explosionEffectPrefab: {fileID: 1927813712329350968, guid: 8021ceb41671eb94db5bcdff489470e9, type: 3}
-  _deleatingTimeMin: 2
-  _deleatingTimeMax: 5
+  _deleatingTimeMin: 1
+  _deleatingTimeMax: 2
   _poolCapacity: 10
   _poolMaxSize: 20
   _effectDeleatingTime: 4
+  _exploader: {fileID: 1868351268}
+--- !u!114 &1868351268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868351262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195a5c1881794c64aa7fdf73f5714858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _force: 1000
+  _radius: 30
 --- !u!1 &1955453814
 GameObject:
   m_ObjectHideFlags: 0

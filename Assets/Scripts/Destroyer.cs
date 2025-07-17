@@ -6,7 +6,7 @@ using UnityEngine.Pool;
 
 public abstract class Destroyer : MonoBehaviour
 {
-    [SerializeField] private Spawner _spawner;
+    [SerializeField] private Spawner _objectSpawner;
     [SerializeField] private ExplosionEffect _explosionEffectPrefab;
     [SerializeField] private float _deleatingTimeMin = 2f;
     [SerializeField] private float _deleatingTimeMax = 5f;
@@ -18,7 +18,6 @@ public abstract class Destroyer : MonoBehaviour
 
     private List<WaitForSeconds> _objectDeleatingTimes;
     private WaitForSeconds _effectDeleatingTimeWait;
-
     private ObjectPool<ExplosionEffect> _explosionPrefabPool;
 
     private void Awake()
@@ -46,13 +45,15 @@ public abstract class Destroyer : MonoBehaviour
         }
     }
 
-    public abstract void DestroyObject(DestroyableObject destroyableObject);
-
-    protected IEnumerator DestroyAfterDelay(DestroyableObject destroyableObject)
+    public void StartDestroying(DestroyableObject destroyableObject)
     {
-        yield return _objectDeleatingTimes[UnityEngine.Random.Range(0, _objectDeleatingTimes.Count)];
+        StartCoroutine(DestroyAfterDelay(destroyableObject));
+    }
+
+    protected virtual void DestroyObject(DestroyableObject destroyableObject)
+    {
         Vector3 position = destroyableObject.transform.position;
-        _spawner.ReleaseObjectIntoPool(destroyableObject);
+        _objectSpawner.ReleaseObjectIntoPool(destroyableObject);
         SpawnExplosion(position);
         Destroyed?.Invoke(position);
     }
@@ -62,6 +63,12 @@ public abstract class Destroyer : MonoBehaviour
         ExplosionEffect explosion = _explosionPrefabPool.Get();
         explosion.PlayEffect(position);
         StartCoroutine(DeactivateAfterDelay(explosion));
+    }
+
+    private IEnumerator DestroyAfterDelay(DestroyableObject destroyableObject)
+    {
+        yield return _objectDeleatingTimes[UnityEngine.Random.Range(0, _objectDeleatingTimes.Count)];
+        DestroyObject(destroyableObject);
     }
 
     private IEnumerator DeactivateAfterDelay(ExplosionEffect explosion)

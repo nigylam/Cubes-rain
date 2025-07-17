@@ -20,7 +20,7 @@ public class BombSpawner : Spawner
     {
         destroyableObject.gameObject.SetActive(true);
         destroyableObject.gameObject.transform.position = _spawnPosition;
-        ObjectDestroyer.DestroyObject(destroyableObject);
+        ObjectDestroyer.StartDestroying(destroyableObject);
     }
 
     private void Spawn(Vector3 position)

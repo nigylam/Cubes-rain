@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(Rigidbody))]
 public class Cube : DestroyableObject
 {
     private readonly string IsCollidedName = "isCollided";
@@ -14,11 +13,6 @@ public class Cube : DestroyableObject
     private bool _isCollided = false;
 
     public bool IsCollided => _isCollided;
-
-    private void Awake()
-    {
-        _animator = GetComponent<Animator>();
-    }
 
     private void Update()
     {
@@ -39,5 +33,11 @@ public class Cube : DestroyableObject
     {
         Disabled?.Invoke();
         _isCollided = false;
+    }
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+        _animator = GetComponent<Animator>();
     }
 }
