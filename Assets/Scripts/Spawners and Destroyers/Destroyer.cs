@@ -7,16 +7,16 @@ public abstract class Destroyer : MonoBehaviour
 {
     [SerializeField] private Spawner _objectSpawner;
     [SerializeField] private ExplosionEffect _explosionEffectPrefab;
-    [SerializeField] private float _destroyingTimeMin = 2f;
-    [SerializeField] private float _destroyingTimeMax = 5f;
+    [SerializeField] private float _destroyTimeMin = 2f;
+    [SerializeField] private float _destroyTimeMax = 5f;
     [SerializeField] private int _poolCapacity = 10;
     [SerializeField] private int _poolMaxSize = 20;
-    [SerializeField] private float _effectDeleatingTime = 4f;
+    [SerializeField] private float _effectDeleateTime = 4f;
 
     public event Action<Vector3> Destroyed;
 
     private ObjectPool<ExplosionEffect> _explosionPrefabPool;
-    private float _destroyingTimeDegree = 0.1f;
+    private float __destroyIterationDelay = 0.1f;
     private WaitForSeconds _effectDeleatingTimeWait;
     private WaitForSeconds _objectDestroyingTimeWait;
 
@@ -27,7 +27,7 @@ public abstract class Destroyer : MonoBehaviour
 
     public virtual void StartDestroying(DestroyableObject destroyableObject)
     {
-        float timeDelay = UnityEngine.Random.Range(_destroyingTimeMin, _destroyingTimeMax);
+        float timeDelay = UnityEngine.Random.Range(_destroyTimeMin, _destroyTimeMax);
         destroyableObject.SetDeleatingTime(timeDelay);
 
         StartCoroutine(DestroyAfterDelay(destroyableObject, timeDelay));
@@ -35,8 +35,8 @@ public abstract class Destroyer : MonoBehaviour
 
     protected virtual void Initialize()
     {
-        _objectDestroyingTimeWait = new WaitForSeconds(_destroyingTimeDegree);
-        _effectDeleatingTimeWait = new WaitForSeconds(_effectDeleatingTime);
+        _objectDestroyingTimeWait = new WaitForSeconds(__destroyIterationDelay);
+        _effectDeleatingTimeWait = new WaitForSeconds(_effectDeleateTime);
 
         _explosionPrefabPool = new ObjectPool<ExplosionEffect>(
             createFunc: () => Instantiate(_explosionEffectPrefab),
@@ -66,7 +66,7 @@ public abstract class Destroyer : MonoBehaviour
 
     private IEnumerator DestroyAfterDelay(DestroyableObject destroyableObject, float timeDelay)
     {
-        int iterationsCount = Convert.ToInt32(timeDelay / _destroyingTimeDegree);
+        int iterationsCount = Convert.ToInt32(timeDelay / __destroyIterationDelay);
 
         for (int i = 0; i < iterationsCount; i++)
             yield return _objectDestroyingTimeWait;

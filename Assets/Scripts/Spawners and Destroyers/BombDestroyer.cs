@@ -6,7 +6,7 @@ public class BombDestroyer : Destroyer
 {
     [SerializeField] private Exploader _exploader;
 
-    private WaitForSeconds _transparencyingOneStepDelay;
+    private WaitForSeconds _transparencyingOneStepWait;
     private float _transparencyingOneStep = 0.1f;
 
     public override void StartDestroying(DestroyableObject destroyableObject)
@@ -14,25 +14,37 @@ public class BombDestroyer : Destroyer
         base.StartDestroying(destroyableObject);
 
         var bomb = destroyableObject as Bomb;
-        StartCoroutine(SmoothlyMakeTransparent(bomb.DeleatingTime, bomb.Material));
+
+        if (bomb != null)
+            StartCoroutine(SmoothlyMakeTransparent(bomb.DeleatingTime, bomb.Material));
+        else
+            Debug.LogError($"{destroyableObject.gameObject.name} is not a Bomb.");
     }
 
     protected override void Initialize()
     {
         base.Initialize();
-        _transparencyingOneStepDelay = new WaitForSeconds(_transparencyingOneStep);
+        _transparencyingOneStepWait = new WaitForSeconds(_transparencyingOneStep);
     }
 
     protected override void DestroyObject(DestroyableObject destroyableObject)
     {
         Vector3 position = destroyableObject.transform.position;
         var bomb = destroyableObject as Bomb;
-        bomb.Material.color = new Color(bomb.Material.color.r, bomb.Material.color.g, bomb.Material.color.b, 1f);
-        RenderingModeChanger.SetMaterialRenderingMode(bomb.Material, RenderingMode.Opaque);
 
-        base.DestroyObject(destroyableObject);
+        if (bomb != null)
+        {
+            bomb.Material.color = new Color(bomb.Material.color.r, bomb.Material.color.g, bomb.Material.color.b, 1f);
+            RenderingModeChanger.SetMaterialRenderingMode(bomb.Material, RenderingMode.Opaque);
 
-        _exploader.Explode(position);
+            base.DestroyObject(destroyableObject);
+
+            _exploader.Explode(position);
+        }
+        else
+        {
+            Debug.LogError($"{destroyableObject.gameObject.name} is not a Bomb.");
+        }
     }
 
     private IEnumerator SmoothlyMakeTransparent(float seconds, Material material)
@@ -47,7 +59,7 @@ public class BombDestroyer : Destroyer
             Color color = material.color;
             color.a -= stepTransparencyIncrease;
             material.color = color;
-            yield return _transparencyingOneStepDelay;
+            yield return _transparencyingOneStepWait;
         }
     }
 }

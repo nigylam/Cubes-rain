@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class DestroyableObject : MonoBehaviour
+public abstract class DestroyableObject : MonoBehaviour
 {
     public Rigidbody Rigidbody { get; private set; }
     public float DeleatingTime { get; private set; }

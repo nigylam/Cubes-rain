@@ -35,6 +35,7 @@ public abstract class Spawner : MonoBehaviour
             ObjectsSpawnedChanged?.Invoke(_objectsSpawned);
         } 
     }
+
     public int ObjectsActive 
     {
         get
@@ -81,12 +82,6 @@ public abstract class Spawner : MonoBehaviour
             );
     }
 
-    private DestroyableObject ActionOnCreate()
-    {
-        ObjectsInstantiated++;
-        return Instantiate(_objectPrefab);
-    }
-
     protected virtual void ActionOnGet(DestroyableObject destroyableObject)
     {
         destroyableObject.gameObject.SetActive(true);
@@ -98,5 +93,11 @@ public abstract class Spawner : MonoBehaviour
     {
         destroyableObject.gameObject.SetActive(false);
         ObjectsActive--;
+    }
+
+    private DestroyableObject ActionOnCreate()
+    {
+        ObjectsInstantiated++;
+        return Instantiate(_objectPrefab);
     }
 }
